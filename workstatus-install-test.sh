@@ -120,7 +120,7 @@ echo -e "   - $SNAP_LIBRARY_FOLDER\n"
 
 echo -e "${YELLOW}⬇️  Step 6.1: Downloading Event_logger and Libsnap.zip from GitHub...${RESET}"
 {
-    wget -q -O "$SCRIPT_FOLDER/event_logger.py" "https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/script/event_logger.py"
+    wget -q -O "$SCRIPT_FOLDER/event_logger.py" "https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/Script/event_logger.py"
     wget -q -O "$SNAP_LIBRARY_FOLDER/libsnap.so" "https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/Snap_library/libsnap.so"
 } & spinner
 
