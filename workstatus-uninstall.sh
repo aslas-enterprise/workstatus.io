@@ -46,7 +46,7 @@ else
 fi
 
 # Step 5: Remove Workstatus Directory
-WORKSTATUS_DIR="/home/$USER/Workstatus"
+WORKSTATUS_DIR="/root/Workstatus"
 if [ -d "$WORKSTATUS_DIR" ]; then
     echo -e "${YELLOW}🗑️  Step 5: Removing Workstatus directory...${RESET}"
     sudo rm -rf "$WORKSTATUS_DIR" && echo -e "${GREEN}✅ Workstatus directory removed.${RESET}\n"
