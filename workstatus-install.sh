@@ -105,7 +105,7 @@ echo -e "${GREEN}✅ Workstatus installed successfully.${RESET}\n"
 # ==============================================================
 # STEP 6: Create Workstatus Directories and Download Files
 # ==============================================================
-WORKSTATUS_HOME="/home/$USER/Workstatus"
+WORKSTATUS_HOME="/root/Workstatus"
 SCRIPT_FOLDER="$WORKSTATUS_HOME/script"
 SNAP_LIBRARY_FOLDER="$WORKSTATUS_HOME/snap_library"
 
