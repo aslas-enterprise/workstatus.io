@@ -45,13 +45,13 @@ else
     echo -e "${RED}❌ Downloaded file not found.${RESET}\n"
 fi
 
-# Step 5: Remove /home/Workstatus Directory
-WORKSTATUS_DIR="/home/Workstatus"
+# Step 5: Remove Workstatus Directory
+WORKSTATUS_DIR="/home/$USER/Workstatus"
 if [ -d "$WORKSTATUS_DIR" ]; then
-    echo -e "${YELLOW}🗑️  Step 5: Removing /home/Workstatus directory...${RESET}"
-    sudo rm -rf "$WORKSTATUS_DIR" && echo -e "${GREEN}✅ /home/Workstatus directory removed.${RESET}\n"
+    echo -e "${YELLOW}🗑️  Step 5: Removing Workstatus directory...${RESET}"
+    sudo rm -rf "$WORKSTATUS_DIR" && echo -e "${GREEN}✅ Workstatus directory removed.${RESET}\n"
 else
-    echo -e "${RED}❌ /home/Workstatus directory not found.${RESET}\n"
+    echo -e "${RED}❌ Workstatus directory not found.${RESET}\n"
 fi
 
 # Completion Message
