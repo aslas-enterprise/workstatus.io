@@ -11,6 +11,9 @@
     <!-- three.js for 3D animation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
+    <!-- Tone.js for audio feedback -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    
     <!-- Google Font (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,8 +65,9 @@
         
         /* Ensure code blocks are scrollable on small screens */
         pre {
-            white-space: pre;
-            overflow-x: auto;
+            white-space: pre-wrap; /* Allow long lines to wrap */
+            overflow-x: auto; /* Fallback for scrolling if needed */
+            word-break: break-all; /* Break long strings like URLs */
         }
     </style>
 </head>
@@ -73,7 +77,7 @@
     <canvas id="bg-canvas"></canvas>
 
     <!-- "Copied!" Toast Notification -->
-    <div id="copy-toast" class="bg-green-500 text-white px-5 py-3 rounded-lg shadow-xl">
+    <div id="copy-toast" class="bg-blue-500 text-white px-5 py-3 rounded-lg shadow-xl">
         Copied to clipboard!
     </div>
 
@@ -123,39 +127,43 @@
                     <div class="p-6 md:p-8 space-y-8">
                         <!-- Step 1 -->
                         <div>
-                            <div class="flex items-center">
+                            <div class="flex items-start"> <!-- Changed from items-center -->
                                 <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-600 rounded-full text-white font-bold text-lg">
                                     1
                                 </span>
-                                <h3 class="ml-4 text-xl font-semibold text-white">Open Terminal & Gain Root Access</h3>
-                            </div>
-                            <p class="mt-3 ml-14 text-gray-300">
-                                First, you need administrative privileges. Open your terminal and run this command.
-                            </p>
-                            <div class="relative group ml-14 mt-4">
-                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-install-1">sudo su</code></pre>
-                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-install-1">
-                                    Copy
-                                </button>
+                                <div class="ml-4 flex-1"> <!-- Added wrapper div -->
+                                    <h3 class="text-xl font-semibold text-white">Open Terminal & Gain Root Access</h3>
+                                    <p class="mt-3 text-gray-300"> <!-- Removed ml-14 -->
+                                        First, you need administrative privileges. Open your terminal and run this command.
+                                    </p>
+                                    <div class="relative group mt-4"> <!-- Removed ml-14 -->
+                                        <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-install-1">sudo su</code></pre>
+                                        <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-install-1">
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Step 2 -->
                         <div>
-                            <div class="flex items-center">
+                            <div class="flex items-start"> <!-- Changed from items-center -->
                                 <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-600 rounded-full text-white font-bold text-lg">
                                     2
                                 </span>
-                                <h3 class="ml-4 text-xl font-semibold text-white">Run the Installation Command</h3>
-                            </div>
-                            <p class="mt-3 ml-14 text-gray-300">
-                                Copy the entire command below, paste it into your terminal, and press Enter.
-                            </p>
-                            <div class="relative group ml-14 mt-4">
-                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-install-2">(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-install.sh)</code></pre>
-                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-install-2">
-                                    Copy
-                                </button>
+                                <div class="ml-4 flex-1"> <!-- Added wrapper div -->
+                                    <h3 class="text-xl font-semibold text-white">Run the Installation Command</h3>
+                                    <p class="mt-3 text-gray-300"> <!-- Removed ml-14 -->
+                                        Copy the entire command below, paste it into your terminal, and press Enter.
+                                    </p>
+                                    <div class="relative group mt-4"> <!-- Removed ml-14 -->
+                                        <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-install-2">(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-install.sh)</code></pre>
+                                        <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-install-2">
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,39 +180,43 @@
                     <div class="p-6 md:p-8 space-y-8">
                         <!-- Step 1 -->
                         <div>
-                            <div class="flex items-center">
+                            <div class="flex items-start"> <!-- Changed from items-center -->
                                 <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-slate-600 rounded-full text-white font-bold text-lg">
                                     1
                                 </span>
-                                <h3 class="ml-4 text-xl font-semibold text-white">Gain Root Access</h3>
-                            </div>
-                            <p class="mt-3 ml-14 text-gray-300">
-                                If your terminal session is still open as root, you can skip this. Otherwise, run:
-                            </p>
-                            <div class="relative group ml-14 mt-4">
-                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-uninstall-1">sudo su</code></pre>
-                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-uninstall-1">
-                                    Copy
-                                </button>
+                                <div class="ml-4 flex-1"> <!-- Added wrapper div -->
+                                    <h3 class="text-xl font-semibold text-white">Gain Root Access</h3>
+                                    <p class="mt-3 text-gray-300"> <!-- Removed ml-14 -->
+                                        If your terminal session is still open as root, you can skip this. Otherwise, run:
+                                    </p>
+                                    <div class="relative group mt-4"> <!-- Removed ml-14 -->
+                                        <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-uninstall-1">sudo su</code></pre>
+                                        <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-uninstall-1">
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Step 2 -->
                         <div>
-                            <div class="flex items-center">
+                            <div class="flex items-start"> <!-- Changed from items-center -->
                                 <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-slate-600 rounded-full text-white font-bold text-lg">
                                     2
                                 </span>
-                                <h3 class="ml-4 text-xl font-semibold text-white">Run the Uninstallation Command</h3>
-                            </div>
-                            <p class="mt-3 ml-14 text-gray-300">
-                                Copy and paste this command to remove the application and its components.
-                            </p>
-                            <div class="relative group ml-14 mt-4">
-                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-uninstall-2">(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-uninstall.sh)</code></pre>
-                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-uninstall-2">
-                                    Copy
-                                </button>
+                                <div class="ml-4 flex-1"> <!-- Added wrapper div -->
+                                    <h3 class="text-xl font-semibold text-white">Run the Uninstallation Command</h3>
+                                    <p class="mt-3 text-gray-300"> <!-- Removed ml-14 -->
+                                        Copy and paste this command to remove the application and its components.
+                                    </p>
+                                    <div class="relative group mt-4"> <!-- Removed ml-14 -->
+                                        <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-uninstall-2">(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-uninstall.sh)</code></pre>
+                                        <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-uninstall-2">
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -275,7 +287,7 @@
                     <ul class="mt-4 space-y-3">
                         <li><a href="tel:+14086413010" class="hover:text-white transition-colors">+14086413010</a></li>
                         <li><a href="mailto:sales@aslase.com" class="hover:text-white transition-colors">sales@aslase.com</a></li>
-                        
+                        <li class="pt-2">302 J, DHA Phase 12, Lahore</li> <!-- Added this line -->
                     </ul>
                 </div>
             </div>
@@ -290,6 +302,18 @@
     <script>
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // --- Tone.js Synth ---
+        let synth;
+        try {
+            // Create a simple synth one time, with a softer sine wave and lower volume (-12dB)
+            synth = new Tone.Synth({
+                oscillator: { type: "sine" },
+                volume: -12
+            }).toDestination();
+        } catch (e) {
+            console.error("Failed to initialize Tone.js synth:", e);
+        }
 
         // --- Copy to Clipboard Functionality ---
         const toast = document.getElementById('copy-toast');
@@ -310,6 +334,17 @@
                 textarea.select();
                 try {
                     document.execCommand('copy');
+                    
+                    // Play sound feedback
+                    if (synth) {
+                        // Start audio context if it's not running (required by browsers)
+                        if (Tone.context.state !== 'running') {
+                            Tone.context.resume();
+                        }
+                        // Play a short, soft note (E5 for a 16th note duration)
+                        synth.triggerAttackRelease("E5", "16n");
+                    }
+
                     // Show toast notification
                     toast.classList.add('show');
                     clearTimeout(toastTimer); // Clear any existing timer
@@ -410,4 +445,11 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
