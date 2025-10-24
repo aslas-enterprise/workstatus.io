@@ -3,285 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workstatus.io Linux Client Guide</title>
-
+    <title>Workstatus.io Linux Client Guide - Aslase</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- three.js for 3D animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Google Font (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* --- Base & Reset Styles --- */
-        :root {
-            --primary-color: #007bff;
-            --dark-bg: #2d3436;
-            --light-bg: #ffffff;
-            --text-color: #333;
-            --light-text-color: #f8f9fa;
-            --border-color: #e9ecef;
-            --code-bg: #1e1e1e;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        /* Use the Inter font family */
         body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.7;
-            background-color: #f4f7f6;
-            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* --- Layout & Container --- */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* --- Header --- */
-        .header {
-            background-color: var(--dark-bg);
-            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--light-text-color);
-            padding: 4rem 1rem;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* --- Main Content --- */
-        main {
-            padding: 3rem 0;
-        }
-        
-        .guide-section {
-            background-color: var(--light-bg);
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin-bottom: 2.5rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-        
-        .guide-section h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 3px solid var(--primary-color);
-            display: inline-block;
-        }
-
-        .step h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            position: relative;
-            padding-left: 35px;
-        }
-        
-        /* Step Counter Styling */
-        .step h3::before {
-            content: attr(data-step);
-            position: absolute;
+        /* Styling for the 3D background canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
             left: 0;
-            top: -2px;
-            width: 28px;
-            height: 28px;
-            background-color: var(--primary-color);
-            color: var(--light-text-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            font-weight: 700;
-        }
-        
-        .step p {
-            margin-bottom: 1.5rem;
-        }
-        
-        .step {
-            margin-bottom: 2rem;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
 
-        /* --- Interactive Code Block --- */
-        .code-block {
-            position: relative;
-            background-color: var(--code-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            overflow-x: auto;
-            margin-top: 1rem;
+        /* Custom animation for page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .code-block pre {
-            margin: 0;
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Styling for the "Copied!" toast notification */
+        #copy-toast {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            transform: translateX(150%);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            z-index: 100;
+        }
+
+        #copy-toast.show {
+            transform: translateX(0);
+            opacity: 1;
         }
         
-        .code-block code {
-            font-family: 'Courier New', Courier, monospace;
-            color: var(--light-text-color);
-            font-size: 0.95rem;
+        /* Ensure code blocks are scrollable on small screens */
+        pre {
             white-space: pre;
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background-color: #4a4a4a;
-            color: var(--light-text-color);
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-        }
-        
-        .copy-btn:hover {
-            background-color: #5a5a5a;
-        }
-        
-        .copy-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* --- Footer --- */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #777;
+            overflow-x: auto;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-900 text-gray-200">
 
-    <header class="header">
-        <h1>Workstatus.io Linux Client Guide</h1>
-        <p>Simple, step-by-step instructions to install or uninstall the Workstatus.io desktop client on Debian-based Linux systems.</p>
-    </header>
+    <!-- 3D Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="container">
-        <main>
-            <section id="installation" class="guide-section">
-                <h2>Installation</h2>
-                <div class="step">
-                    <h3 data-step="1">Open Terminal & Gain Root Access</h3>
-                    <p>First, you need administrative privileges. Open your terminal and run the following command. You will be prompted for your password.</p>
-                    <div class="code-block">
-                        <pre><code>sudo su</code></pre>
-                        <button class="copy-btn" title="Copy to clipboard">
-                            <i class="fa-regular fa-copy"></i> Copy
-                        </button>
+    <!-- "Copied!" Toast Notification -->
+    <div id="copy-toast" class="bg-green-500 text-white px-5 py-3 rounded-lg shadow-xl">
+        Copied to clipboard!
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+
+        <!-- Header -->
+        <header class="w-full max-w-6xl mx-auto px-6 py-5">
+            <div class="flex justify-between items-center">
+                <a href="https://aslase.com/" target="_blank" class="flex items-center space-x-3 group">
+                    <img 
+                        src="https://aslase.com/assets/aslase-logo.png" 
+                        alt="Aslase Logo" 
+                        class="h-10 w-auto"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                    >
+                    <!-- Fallback text if logo fails -->
+                    <span style="display:none;" class="text-2xl font-bold text-white">Aslase</span>
+                    
+                    <span class="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                        
+                    </span>
+                </a>
+                <a href="https://aslase.com/" target="_blank" class="hidden sm:inline-block text-sm text-gray-300 hover:text-white transition-colors border border-gray-600 hover:border-blue-500 rounded-full px-4 py-2">
+                    Visit Aslase.com &rarr;
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
+            
+            <!-- Hero Section -->
+            <section class="text-center fade-in" style="animation-delay: 100ms;">
+                <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-green-400 pb-2">
+                    Workstatus.io Linux Client
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl mx-auto">
+                    Simple, step-by-step instructions to install or uninstall on Debian-based systems (like Ubuntu).
+                </p>
+            </section>
+
+            <!-- Installation Section -->
+            <section class="mt-16 md:mt-24 fade-in" style="animation-delay: 300ms;">
+                <div class="bg-slate-800/80 backdrop-filter backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+                    <div class="p-6 md:p-8 border-b border-slate-700">
+                        <h2 class="text-3xl font-bold text-white">Installation</h2>
                     </div>
-                </div>
-                <div class="step">
-                    <h3 data-step="2">Run the Installation Command</h3>
-                    <p>Next, copy the command below, paste it into your terminal, and press <strong>Enter</strong>. This automatically downloads and runs the official installer script.</p>
-                    <div class="code-block">
-                        <pre><code>(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-install.sh)</code></pre>
-                        <button class="copy-btn" title="Copy to clipboard">
-                            <i class="fa-regular fa-copy"></i> Copy
-                        </button>
+                    
+                    <div class="p-6 md:p-8 space-y-8">
+                        <!-- Step 1 -->
+                        <div>
+                            <div class="flex items-center">
+                                <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-600 rounded-full text-white font-bold text-lg">
+                                    1
+                                </span>
+                                <h3 class="ml-4 text-xl font-semibold text-white">Open Terminal & Gain Root Access</h3>
+                            </div>
+                            <p class="mt-3 ml-14 text-gray-300">
+                                First, you need administrative privileges. Open your terminal and run this command.
+                            </p>
+                            <div class="relative group ml-14 mt-4">
+                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-install-1">sudo su</code></pre>
+                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-install-1">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div>
+                            <div class="flex items-center">
+                                <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-600 rounded-full text-white font-bold text-lg">
+                                    2
+                                </span>
+                                <h3 class="ml-4 text-xl font-semibold text-white">Run the Installation Command</h3>
+                            </div>
+                            <p class="mt-3 ml-14 text-gray-300">
+                                Copy the entire command below, paste it into your terminal, and press Enter.
+                            </p>
+                            <div class="relative group ml-14 mt-4">
+                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-install-2">(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-install.sh)</code></pre>
+                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-install-2">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section id="uninstallation" class="guide-section">
-                <h2>Uninstallation (Optional)</h2>
-                <div class="step">
-                    <h3 data-step="1">Open Terminal & Gain Root Access</h3>
-                    <p>If you need to remove the client, you'll need administrative privileges again. If your terminal session is still root, you can skip this.</p>
-                    <div class="code-block">
-                        <pre><code>sudo su</code></pre>
-                        <button class="copy-btn" title="Copy to clipboard">
-                            <i class="fa-regular fa-copy"></i> Copy
-                        </button>
+            <!-- Uninstallation Section -->
+            <section class="mt-12 md:mt-16 fade-in" style="animation-delay: 500ms;">
+                <div class="bg-slate-800/80 backdrop-filter backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+                    <div class="p-6 md:p-8 border-b border-slate-700">
+                        <h2 class="text-3xl font-bold text-white">Uninstallation <span class="text-lg font-medium text-gray-400">(Optional)</span></h2>
                     </div>
-                </div>
-                <div class="step">
-                    <h3 data-step="2">Run the Uninstallation Command</h3>
-                    <p>Copy and paste the command below. This will download and run the official uninstallation script, removing the application and its components.</p>
-                    <div class="code-block">
-                        <pre><code>(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-uninstall.sh)</code></pre>
-                        <button class="copy-btn" title="Copy to clipboard">
-                            <i class="fa-regular fa-copy"></i> Copy
-                        </button>
+                    
+                    <div class="p-6 md:p-8 space-y-8">
+                        <!-- Step 1 -->
+                        <div>
+                            <div class="flex items-center">
+                                <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-slate-600 rounded-full text-white font-bold text-lg">
+                                    1
+                                </span>
+                                <h3 class="ml-4 text-xl font-semibold text-white">Gain Root Access</h3>
+                            </div>
+                            <p class="mt-3 ml-14 text-gray-300">
+                                If your terminal session is still open as root, you can skip this. Otherwise, run:
+                            </p>
+                            <div class="relative group ml-14 mt-4">
+                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-uninstall-1">sudo su</code></pre>
+                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-uninstall-1">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div>
+                            <div class="flex items-center">
+                                <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-slate-600 rounded-full text-white font-bold text-lg">
+                                    2
+                                </span>
+                                <h3 class="ml-4 text-xl font-semibold text-white">Run the Uninstallation Command</h3>
+                            </div>
+                            <p class="mt-3 ml-14 text-gray-300">
+                                Copy and paste this command to remove the application and its components.
+                            </p>
+                            <div class="relative group ml-14 mt-4">
+                                <pre class="bg-slate-900 rounded-lg p-4 text-gray-300 font-mono text-sm"><code id="copy-uninstall-2">(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-uninstall.sh)</code></pre>
+                                <button class="copy-btn absolute top-2 right-2 bg-slate-700 text-gray-300 hover:bg-blue-600 hover:text-white transition-all opacity-0 group-hover:opacity-100 rounded-md px-3 py-1 text-xs font-medium" data-copy-target="copy-uninstall-2">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
+
+        <!-- Footer -->
+        <footer class="w-full max-w-6xl mx-auto px-6 py-12 mt-16 text-center text-gray-400 text-sm border-t border-slate-700">
+            <p class="font-semibold text-lg text-white">Aslase</p>
+            <p class="mt-2">302 J, DHA Phase 12, Lahore</p>
+            <p class="mt-4">
+                &copy; <span id="current-year"></span> Aslase. All rights reserved.
+            </p>
+            <a href="https://aslase.com/" target="_blank" class="mt-2 inline-block text-blue-400 hover:text-blue-300 transition-colors">
+                https://aslase.com/
+            </a>
+        </footer>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Workstatus.io. All rights reserved.</p>
-    </footer>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Find all copy buttons on the page
-            const copyButtons = document.querySelectorAll('.copy-btn');
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
 
-            copyButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Find the 'code' element within the same 'code-block'
-                    const codeBlock = button.closest('.code-block');
-                    const codeElement = codeBlock.querySelector('code');
-                    const codeToCopy = codeElement.innerText;
+        // --- Copy to Clipboard Functionality ---
+        const toast = document.getElementById('copy-toast');
+        let toastTimer;
 
-                    // Use the modern Navigator Clipboard API to copy text
-                    navigator.clipboard.writeText(codeToCopy).then(() => {
-                        // --- Provide user feedback on successful copy ---
-                        
-                        // 1. Store original content
-                        const originalContent = button.innerHTML;
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.dataset.copyTarget;
+                const targetElement = document.getElementById(targetId);
+                const textToCopy = targetElement.textContent;
 
-                        // 2. Change button text and icon to show success
-                        button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                        button.style.backgroundColor = '#28a745'; // Green color for success
-
-                        // 3. Revert back to original after 2 seconds
-                        setTimeout(() => {
-                            button.innerHTML = originalContent;
-                            button.style.backgroundColor = ''; // Revert to original color
-                        }, 2000);
-                        
-                    }).catch(err => {
-                        console.error('Failed to copy text: ', err);
-                        // Optionally, provide an error message to the user
-                        button.innerText = 'Failed!';
-                        setTimeout(() => {
-                            button.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
-                        }, 2000);
-                    });
-                });
+                // Use the clipboard fallback for maximum compatibility (especially in iframes)
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                textarea.style.position = 'absolute';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    // Show toast notification
+                    toast.classList.add('show');
+                    clearTimeout(toastTimer); // Clear any existing timer
+                    toastTimer = setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textarea);
             });
         });
-    </script>
 
+        // --- three.js 3D Background Animation ---
+        let scene, camera, renderer, particles;
+
+        function init3D() {
+            try {
+                // Scene
+                scene = new THREE.Scene();
+
+                // Camera
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 50;
+
+                // Renderer
+                renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+                // Particles
+                const particleCount = 5000;
+                const positions = new Float32Array(particleCount * 3);
+
+                for (let i = 0; i < particleCount * 3; i++) {
+                    positions[i] = (Math.random() - 0.5) * 200; // Spread particles
+                }
+
+                const particlesGeometry = new THREE.BufferGeometry();
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                const particlesMaterial = new THREE.PointsMaterial({
+                    color: 0x0099ff, // Blueish color
+                    size: 0.15,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending,
+                    opacity: 0.7
+                });
+
+                particles = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particles);
+
+                // Event Listeners
+                window.addEventListener('resize', onWindowResize, false);
+                document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+                // Start animation
+                animate();
+            } catch (e) {
+                console.error("Failed to initialize 3D background:", e);
+                // Hide canvas if it fails
+                const canvas = document.getElementById('bg-canvas');
+                if (canvas) canvas.style.display = 'none';
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Subtle rotation
+            const time = Date.now() * 0.0001;
+            particles.rotation.x = time * 0.2;
+            particles.rotation.y = time * 0.1;
+
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        let mouseX = 0, mouseY = 0;
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) / 100;
+            mouseY = (event.clientY - window.innerHeight / 2) / 100;
+            
+            // Update camera position based on mouse
+            camera.position.x += (mouseX - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+        }
+
+        // Initialize 3D scene on load
+        window.onload = init3D;
+
+    </script>
 </body>
 </html>
