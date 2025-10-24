@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workstatus.io Linux Client Guide</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- Base & Reset Styles --- */
+        :root {
+            --primary-color: #007bff;
+            --dark-bg: #2d3436;
+            --light-bg: #ffffff;
+            --text-color: #333;
+            --light-text-color: #f8f9fa;
+            --border-color: #e9ecef;
+            --code-bg: #1e1e1e;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            background-color: #f4f7f6;
+            color: var(--text-color);
+        }
+
+        /* --- Layout & Container --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        .header {
+            background-color: var(--dark-bg);
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--light-text-color);
+            padding: 4rem 1rem;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* --- Main Content --- */
+        main {
+            padding: 3rem 0;
+        }
+        
+        .guide-section {
+            background-color: var(--light-bg);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+        
+        .guide-section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+        }
+
+        .step h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 35px;
+        }
+        
+        /* Step Counter Styling */
+        .step h3::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .step p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .step {
+            margin-bottom: 2rem;
+        }
+
+        /* --- Interactive Code Block --- */
+        .code-block {
+            position: relative;
+            background-color: var(--code-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+        
+        .code-block code {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--light-text-color);
+            font-size: 0.95rem;
+            white-space: pre;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #4a4a4a;
+            color: var(--light-text-color);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        
+        .copy-btn:hover {
+            background-color: #5a5a5a;
+        }
+        
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Workstatus.io Linux Client Guide</h1>
+        <p>Simple, step-by-step instructions to install or uninstall the Workstatus.io desktop client on Debian-based Linux systems.</p>
+    </header>
+
+    <div class="container">
+        <main>
+            <section id="installation" class="guide-section">
+                <h2>Installation</h2>
+                <div class="step">
+                    <h3 data-step="1">Open Terminal & Gain Root Access</h3>
+                    <p>First, you need administrative privileges. Open your terminal and run the following command. You will be prompted for your password.</p>
+                    <div class="code-block">
+                        <pre><code>sudo su</code></pre>
+                        <button class="copy-btn" title="Copy to clipboard">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3 data-step="2">Run the Installation Command</h3>
+                    <p>Next, copy the command below, paste it into your terminal, and press <strong>Enter</strong>. This automatically downloads and runs the official installer script.</p>
+                    <div class="code-block">
+                        <pre><code>(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-install.sh)</code></pre>
+                        <button class="copy-btn" title="Copy to clipboard">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="uninstallation" class="guide-section">
+                <h2>Uninstallation (Optional)</h2>
+                <div class="step">
+                    <h3 data-step="1">Open Terminal & Gain Root Access</h3>
+                    <p>If you need to remove the client, you'll need administrative privileges again. If your terminal session is still root, you can skip this.</p>
+                    <div class="code-block">
+                        <pre><code>sudo su</code></pre>
+                        <button class="copy-btn" title="Copy to clipboard">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <div class="step">
+                    <h3 data-step="2">Run the Uninstallation Command</h3>
+                    <p>Copy and paste the command below. This will download and run the official uninstallation script, removing the application and its components.</p>
+                    <div class="code-block">
+                        <pre><code>(apt-get update -qq && apt-get install -y wget >/dev/null 2>&1) && bash <(wget -qO- https://raw.githubusercontent.com/aslas-enterprise/workstatus.io/master/workstatus-uninstall.sh)</code></pre>
+                        <button class="copy-btn" title="Copy to clipboard">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Workstatus.io. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Find all copy buttons on the page
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Find the 'code' element within the same 'code-block'
+                    const codeBlock = button.closest('.code-block');
+                    const codeElement = codeBlock.querySelector('code');
+                    const codeToCopy = codeElement.innerText;
+
+                    // Use the modern Navigator Clipboard API to copy text
+                    navigator.clipboard.writeText(codeToCopy).then(() => {
+                        // --- Provide user feedback on successful copy ---
+                        
+                        // 1. Store original content
+                        const originalContent = button.innerHTML;
+
+                        // 2. Change button text and icon to show success
+                        button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                        button.style.backgroundColor = '#28a745'; // Green color for success
+
+                        // 3. Revert back to original after 2 seconds
+                        setTimeout(() => {
+                            button.innerHTML = originalContent;
+                            button.style.backgroundColor = ''; // Revert to original color
+                        }, 2000);
+                        
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        // Optionally, provide an error message to the user
+                        button.innerText = 'Failed!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
